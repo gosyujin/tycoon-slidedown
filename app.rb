@@ -36,10 +36,7 @@ get '/' do
          '</form>'
 end
 
-get '/down' do
-puts "AAA"
-puts params["url"]
-  return "AAA"
-  #ss = Slideshare.new(params["url"])
-  #return ss.get()
+post '/down' do
+  ss = Slideshare.new(params["url"])
+  return ss.get()
 end
