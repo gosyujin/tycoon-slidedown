@@ -37,7 +37,9 @@ get '/' do
 end
 
 get '/down' do
-  return params["url"]
+puts "AAA"
+puts params["url"]
+  return "AAA"
   #ss = Slideshare.new(params["url"])
   #return ss.get()
 end
