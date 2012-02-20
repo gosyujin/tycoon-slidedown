@@ -7,7 +7,6 @@ require 'net/http'
 
 class Slideshare
   def initialize(url)
-puts url
     @url = 'http://www.slideshare.net/api/2/get_slideshow'
     @param = Hash.new
     @param["slideshow_url"] = url
@@ -38,6 +37,7 @@ get '/' do
 end
 
 get '/down' do
-  ss = Slideshare.new(params["url"])
-  return ss.get()
+  return params["url"]
+  #ss = Slideshare.new(params["url"])
+  #return ss.get()
 end
