@@ -29,6 +29,7 @@ class Slideshare
 end
 
 get '/' do
-  tw = Slideshare.new()
-  return tw.get()
+  ss = Slideshare.new()
+  puts ss.get()
+  return "HElOO"
 end
