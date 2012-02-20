@@ -10,26 +10,29 @@ class Slideshare
     @url = 'http://www.slideshare.net/api/2/get_slideshow'
     @param = Hash.new
     @param["slideshow_url"] = 'http://www.slideshare.net/gishi/wicket-presentation'
-    @param["api_key"] = 'EQyydpLx'
-    @param["sharedsecret"] = '8drMZ4hG'
+puts ENV["API_KEY"]
+puts ENV["SHARED_SECRET"]
+
+    @param["api_key"] = ENV["API_KEY"]
+    @param["shared_secret"] = ENV["SHARED_SECRET"]
     # ts
     @param["ts"] = Time.now.to_i.to_s
     # hash
-    @param["hash"] = Digest::SHA1.hexdigest(param["sharedsecret"]+param["ts"])
+    @param["hash"] = Digest::SHA1.hexdigest(@param["shared_secret"]+@param["ts"])
   end
 
   def get()
     uri = URI.parse(@url)
     Net::HTTP.new(uri.host).start do |http|
-    uri_param = param.sort.map {|i|i.join('=')}.join('&')
+      uri_param = @param.sort.map {|i|i.join('=')}.join('&')
     
-    res = http.get(uri.path + '?' + uri_param)
-    return res.body
+      res = http.get(uri.path + '?' + uri_param)
+      return res.body
+    end
   end
 end
 
 get '/' do
   ss = Slideshare.new()
-  puts ss.get()
-  return "HElOO"
+  return ss.get()
 end
