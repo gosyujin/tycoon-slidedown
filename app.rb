@@ -6,13 +6,11 @@ require 'uri'
 require 'net/http'
 
 class Slideshare
-  def initialize()
+  def initialize(url)
+puts url
     @url = 'http://www.slideshare.net/api/2/get_slideshow'
     @param = Hash.new
-    @param["slideshow_url"] = 'http://www.slideshare.net/gishi/wicket-presentation'
-puts ENV["API_KEY"]
-puts ENV["SHARED_SECRET"]
-
+    @param["slideshow_url"] = url
     @param["api_key"] = ENV["API_KEY"]
     @param["shared_secret"] = ENV["SHARED_SECRET"]
     # ts
@@ -33,6 +31,13 @@ puts ENV["SHARED_SECRET"]
 end
 
 get '/' do
-  ss = Slideshare.new()
+  return '<form method="post" action="down">' +
+           '<input type="text" name="url" />' +
+           '<input type="submit" value="submit" />' +
+         '</form>'
+end
+
+get '/down' do
+  ss = Slideshare.new(params["url"])
   return ss.get()
 end
