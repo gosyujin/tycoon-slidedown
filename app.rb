@@ -57,7 +57,11 @@ post '/down' do
   slide = '<dl>'
   hash.each do |k,v|
     slide += '<dt>' + k.to_s + '</dt>'
-    slide += '<dd>' + v + '</dd>'
+    if k.to_s == "DownloadUrl" then
+      slide += '<dd><a href="' + v + '">' + v  +'</a></dd>'
+    else
+      slide += '<dd>' + v + '</dd>'
+    end
   end
   slide += '</dl>'
 
