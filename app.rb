@@ -4,6 +4,7 @@ require 'sinatra'
 require 'openssl'
 require 'uri'
 require 'net/http'
+require 'nokogiri'
 
 class Slideshare
   def initialize(url)
@@ -22,15 +23,26 @@ class Slideshare
     uri = URI.parse(@url)
     Net::HTTP.new(uri.host).start do |http|
       uri_param = @param.sort.map {|i|i.join('=')}.join('&')
-    
       res = http.get(uri.path + '?' + uri_param)
-      return res.body
+      return xml_parse(res.body)
     end
   end
+
+  def xml_parse(res)
+    hash = Hash.new
+    xml = Nokogiri::XML(res)
+    nodeSet = xml.xpath("//Slideshow")
+    nodeSet.children.each do |elem|
+      if elem.instance_of?(Nokogiri::XML::Element) then
+        hash[elem.node_name.intern] = elem.children.text
+      end
+    end
+    return hash
+  end 
 end
 
 get '/' do
-  return '<form method="post" action="down">' +
+  return '<h1>Tycoon-Slidedown !!</h1><form method="post" action="down">' +
            '<input type="text" name="url" />' +
            '<input type="submit" value="submit" />' +
          '</form>'
@@ -38,5 +50,7 @@ end
 
 post '/down' do
   ss = Slideshare.new(params["url"])
-  return ss.get()
+  hash = ss.get()
+  puts hash
+  haml :down
 end
