@@ -43,15 +43,29 @@ class Slideshare
 end
 
 get '/' do
-  return '<h1>Tycoon-Slidedown !!</h1><form method="post" action="down">' +
+  h1 = '<h1>Tycoon-Slidedown !!</h1>'
+  form = '<form method="post" action="down">' +
            '<input type="text" name="url" />' +
            '<input type="submit" value="submit" />' +
          '</form>'
+  return h1 + form
 end
 
 post '/down' do
   ss = Slideshare.new(params["url"])
   hash = ss.get()
-  puts hash
-  haml :down
+  slide = '<dl>'
+  hash.each do |k,v|
+    slide += '<dt>' + k.to_s + '</dt>'
+    slide += '<dd>' + v + '</dd>'
+  end
+  slide += '</dl>'
+
+  h1 = '<h1>Tycoon-Slidedown !!</h1>'
+  form = '<form method="post" action="down">' +
+           '<input type="text" name="url" />' +
+           '<input type="submit" value="submit" />' +
+         '</form>'
+  return h1 + form + slide
+#  haml :down
 end
