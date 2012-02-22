@@ -5,6 +5,7 @@ require 'openssl'
 require 'uri'
 require 'net/http'
 require 'nokogiri'
+require 'haml'
 
 class Slideshare
   def initialize(url)
